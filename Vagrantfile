@@ -1,36 +1,32 @@
 Vagrant.configure("2") do |config|
-  config.vm.define "web_1" do |m|
+  config.vm.define "web1" do |m|
 
     m.vm.box = "ubuntu/groovy64"
     m.vm.provider :virtualbox do |vb|
-      vb.customize [ 'modifyvm', :id, '--name', 'web_1' ]
-      vb.customize [ 'modifyvm', :id, '--cpus', '2' ]
-      vb.customize [ 'modifyvm', :id, '--memory', '1024' ]
-      vb.customize [ 'modifyvm', :id, '--cpuexecutioncap', '50' ]
+      vb.customize [ 'modifyvm', :id, '--name', 'web1' ]
+      vb.customize [ 'modifyvm', :id, '--memory', '512' ]
     end
   
     m.vm.hostname = "web1"  
     m.vm.provision "shell", path: "install.sh"
     m.vm.synced_folder "./www_1", "/var/www/html/"
 
-    config.vm.network "private_network", ip: "192.168.33.11"
+    m.vm.network "private_network", ip: "192.168.33.11"
   end
 
-  config.vm.define "web_2" do |m|
+  config.vm.define "web2" do |m|
 
     m.vm.box = "ubuntu/groovy64"
     m.vm.provider :virtualbox do |vb|
-      vb.customize [ 'modifyvm', :id, '--name', 'web_2' ]
-      vb.customize [ 'modifyvm', :id, '--cpus', '2' ]
-      vb.customize [ 'modifyvm', :id, '--memory', '1024' ]
-      vb.customize [ 'modifyvm', :id, '--cpuexecutioncap', '50' ]
+      vb.customize [ 'modifyvm', :id, '--name', 'web2' ]
+      vb.customize [ 'modifyvm', :id, '--memory', '512' ]
     end
   
     m.vm.hostname = "web2"
     m.vm.provision "shell", path: "install.sh"
     m.vm.synced_folder "./www_2", "/var/www/html/"
 
-    config.vm.network "private_network", ip: "192.168.33.12"
+    m.vm.network "private_network", ip: "192.168.33.12"
   end
 
   config.vm.define "haproxy" do |m|
@@ -38,9 +34,7 @@ Vagrant.configure("2") do |config|
     m.vm.box = "ubuntu/groovy64"
     m.vm.provider :virtualbox do |vb|
       vb.customize [ 'modifyvm', :id, '--name', 'haproxy' ]
-      vb.customize [ 'modifyvm', :id, '--cpus', '2' ]
-      vb.customize [ 'modifyvm', :id, '--memory', '1024' ]
-      vb.customize [ 'modifyvm', :id, '--cpuexecutioncap', '50' ]
+      vb.customize [ 'modifyvm', :id, '--memory', '512' ]
     end
   
     m.vm.hostname = "haproxy"
@@ -48,6 +42,6 @@ Vagrant.configure("2") do |config|
   
     m.vm.provision "shell", path: "install_haproxy.sh"
     
-    config.vm.network "private_network", ip: "192.168.33.10"
+    m.vm.network "private_network", ip: "192.168.33.10"
   end
 end
