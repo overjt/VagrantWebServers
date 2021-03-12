@@ -1,0 +1,1 @@
+![VagrantUP](images/vagrantup.svg)
